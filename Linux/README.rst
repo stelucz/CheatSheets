@@ -51,14 +51,20 @@ Enabling service (autostart, start on boot, ...)
 ************************************************
 
 The three most common init systems:
- * System V is the older init system:
+
+* System V is the older init system:
+
   * Debian 6 and earlier
   * Ubuntu 9.04 and earlier
   * CentOS 5 and earlier
- * Upstart:
+
+* Upstart:
+
   * Ubuntu 9.10 to Ubuntu 14.10, including Ubuntu 14.04
   * CentOS 6
- * Systemd:
+
+* Systemd:
+
   * Debian 7 and Debian 8
   * Ubuntu 15.04 and newer
   * CentOS 7
