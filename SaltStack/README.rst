@@ -29,14 +29,14 @@ Commands::
 
  salt-key -l 	          # List the public keys
  salt-key -L 	          # List all public keys
- salt-key -a 'minion'	  # Accept minion1 public key
- salt-key -A 	          # Accept ALL public keys
+ salt-key -a 'minion'   # Accept minion1 public key
+ salt-key -A            # Accept ALL public keys
  salt-key -d 'minion'   # Delete minion1 public key
  salt-key -D            # Delete ALL public keys
- salt-key -r	        	# Reject a public key
- salt-key -R		        # Reject ALL public keys
- salt-key -p		        # Print the specified public key
- salt-key -P		        # Print all public keys
+ salt-key -r            # Reject a public key
+ salt-key -R            # Reject ALL public keys
+ salt-key -p            # Print the specified public key
+ salt-key -P            # Print all public keys
 
 Targeting minions
 #################
