@@ -147,8 +147,39 @@ Delete user::
 
  ipa userdel <login>
 
+Status of IPA service::
+
+ ipactl status
+
+KVM, qemu, virsh
+#################
+
+Spin virtual machine on KVM::
+
+ virt-install --name=<vm_name> -r 8192 --disk path=<path_to_the_first_volume>,format=qcow2 --disk path=<path_to_the_second_volume>,format=qcow2 --os-type linux --os-variant rhel7.0 --network bridge=<bridge_name> --network bridge=<bridge_name> --network bridge=<bridge_name> --autostart --graphics spice --import --vcpus 4
+
+Convert volume::
+
+ qemu-img convert -f qcow2 -O raw <src_volume>.qcow2 <dst_volume>.raw    # -f input format, -O output format
+
+Resize volume::
+
+ qemu-img resize <volume_name> +10G
+
+
+
 Other
 #####
+
+Kernel patching::
+
+ patching:
+ apt-get update
+ apt-get install linux-image-<version>
+ apt-get install linux-image-extra-<version>
+ apt-get install linux-headers-<version>
+
+ reboot
 
 Random string generator (e.g. password)::
 
@@ -172,6 +203,9 @@ Hash password into passwd format::
 
  openssl passwd -1 password
 
-Spin virtual machine on KVM::
+VirtualBox serial port in Windows::
 
- virt-install --name=<vm_name> -r 8192 --disk path=<path_to_the_first_volume>,format=qcow2 --disk path=<path_to_the_second_volume>,format=qcow2 --os-type linux --os-variant rhel7.0 --network bridge=<bridge_name> --network bridge=<bridge_name> --network bridge=<bridge_name> --autostart --graphics spice --import --vcpus 4
+ # in Settings, tab serial ports:
+ # enable serial port, select host pipe, unselect connect to existing pipe
+ # Port/File path: \\.\pipe\COM1
+ # OK
