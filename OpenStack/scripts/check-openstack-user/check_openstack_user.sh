@@ -1,5 +1,19 @@
 #!/bin/bash
-#
+## Lukas Stehlik 2017
+##
+## Sensu check for checking presence of Openstack user and its role in projects
+##
+## Usage: check_openstack_user.sh -u -d -c -r -i
+##              -u --user             - name of user to check
+##              -d --domain           - domain name to search in
+##              -c --check_role       - check role? 1 - yes, 0 - no
+##              -r --role             - role name
+##              -i --ignored-projects - list of ignored project IDs (e.g. admin project, heat project, ...)
+##
+## Example: check_openstack_user.sh -u admin -d default -c 1 -r admin -i "9c0e038b5bd5480ab8e3ad013ac4e2e0 ec1965ade7434221b21415525a2bcc45"
+##
+##
+
 # export environment variables
 export OS_IDENTITY_API_VERSION=3
 export OS_AUTH_URL=http://:35357/v3
@@ -15,13 +29,49 @@ export OS_CACERT=""
 
 #source keystonercv3
 
-user=''
-domain='default'
-# do role check on all projects? 1 - true, 0 - false
-check_role=1
-role='admin'
-# array if project ids to ignore during check (e.g. admin project, heat user project)
-ignored_projects=( 9c0e038b5bd5480ab8e3ad013ac4e2e0 ec1965ade7434221b21415525a2bcc45 )
+while [[ $# -gt 1 ]]
+do
+key="$1"
+
+case $key in
+    # user to check
+    -u|--user)
+    user="$2"
+    shift # past argument
+    ;;
+    # domain to search in
+    -d|--domain)
+    domain="$2"
+    shift # past argument
+    ;;
+    # check role? 1 - yes, 2 - no (skip role check)
+    -c|--check-role)
+    check_role="$2"
+    shift # past argument
+    ;;
+    # name of role to check
+    -r|--role)
+    role="$2"
+    shift # past argument
+    ;;
+    # project IDs to ignore during check (e.g. admin project, heat user project) -i "ID1,ID2,ID3,..."
+    # 9c0e038b5bd5480ab8e3ad013ac4e2e0 ec1965ade7434221b21415525a2bcc45
+    -i|--ignored-projects)
+    ignored_projects="$2"
+    shift # past argument
+    ;;
+    *)
+            # unknown option
+    ;;
+esac
+shift # past argument or value
+done
+if [ -z "$user" ] || [ -z "$domain" ] || [ -z "$check_role" ] || [ -z "$role" ] || [ -z "$ignored_projects" ]; then
+  echo "Some arguments are missing"
+  exit 1
+fi
+# argument string to array
+ignored_projects=($ignored_projects)
 # get all projects
 all_projects=($(openstack project list --domain $domain | awk 'NR>=3{print $2}'))
 # get projects with user in defined domain
