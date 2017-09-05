@@ -166,6 +166,30 @@ Resize volume::
 
  qemu-img resize <volume_name> +10G
 
+Ceph
+#####
+
+Cluster status::
+
+ ceph -s
+ ceph -w
+ ceph health detail
+
+Tree of OSDs::
+
+ ceph osd tree
+
+Stopping without rebalancing::
+
+ # before maintenance
+ ceph osd set noout
+ # after maintenance
+ ceph osd unset noout
+
+Stop and start osd daemon::
+
+ /etc/init.d/ceph stop osd.<osd-id>
+ /etc/init.d/ceph start osd.<osd-id>
 
 
 Other
