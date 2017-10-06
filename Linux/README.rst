@@ -191,6 +191,24 @@ Stop and start osd daemon::
  /etc/init.d/ceph stop osd.<osd-id>
  /etc/init.d/ceph start osd.<osd-id>
 
+RabbitMQ
+########
+
+Status::
+
+  rabbitmqctl status
+
+Cluster status::
+
+  rabbitmqctl cluster_status
+
+Rejoin cluster process if node left it (crash,redeploy etc)::
+
+  # At some active node in cluster
+  rabbitmqctl forget_cluster_node rabbit@<notincluster_node_name>
+  # At node which should be added to cluster
+  rabbitmqctl stop_app
+  rabbitmqctl join_cluster rabbit@<active_node_name>
 
 Other
 #####
