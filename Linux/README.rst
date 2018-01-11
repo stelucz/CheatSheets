@@ -191,6 +191,12 @@ Stop and start osd daemon::
  /etc/init.d/ceph stop osd.<osd-id>
  /etc/init.d/ceph start osd.<osd-id>
 
+Slowdown recovery::
+
+ ceph tell osd.* injectargs '--osd-max-backfills 1'
+ ceph tell osd.* injectargs '--osd-recovery-max-active 1'
+ ceph tell osd.* injectargs '--osd-recovery-op-priority 1'
+
 RabbitMQ
 ########
 
