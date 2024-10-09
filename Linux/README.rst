@@ -21,6 +21,60 @@ iptables::
 
  iptables -vLn -t nat     # v - verbose, L - list, n - numeric otuput, t - table selector (filter, nat, mangle, raw, security)
 
+Jumping, tunneling
+##################
+
+ssh port forwarding::
+
+ ssh -L 8080:localhost:80 user@host
+
+ssh port forwarding with jump host::
+ ssh -J jump -L <local-port>:<dst-ip>:<dst-port> <dst-host>
+
+Socks proxy::
+
+ ssh -g -N -D 3128 user@host
+
+Set system to use socks proxy for http/s::
+
+ export http_proxy="socks5://localhost:3128"
+ export https_proxy="socks5://localhost:3128"
+
+Set git http/s to use socks proxy::
+
+ git config --global http.proxy socks5://localhost:3128
+ git config --global https.proxy socks5://localhost:3128
+
+Set git ssh to use socks proxy, create `.ssh/config` host::
+
+ Host <git repository url/server>
+ HostName <git repository url/server>
+ User git
+ ProxyCommand nc -v -x 127.0.0.1:3128 %h %p
+
+This will forward all git ssh operations for defined hostname through socks proxy.
+
+ssh config to utilize host as jump::
+
+ Host jump
+ HostName jump.example.com
+ User user
+ ForwardAgent yes
+
+ Host target
+ HostName target.example.com
+ User user
+ ForwardAgent yes
+ ProxyJump jump
+
+sshuttle::
+
+ # sshuttle -r <host> <subnet> -x <excluded_subnet>
+ sshuttle -r host 0/0 -x 10.0.0.0/8 -x 192.168.0.0/16 -x 172.16.0.0/18
+ # kill sshuttle when in daemon mode
+ kill -9 $(cat sshuttle.pid) && rm sshuttle.pid
+
+
 Disk space, usage, folders and files
 ####################
 
